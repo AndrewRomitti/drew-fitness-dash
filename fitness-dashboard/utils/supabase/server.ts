@@ -3,17 +3,10 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-export const getUser = async () => {
-    const auth = getSupabaseAuth();
-    const user = (await ((await auth).getUser())).data.user;
+export async function createClient() {
+  const cookieStore = await cookies()
 
-    return user;
-}
-
-export async function getSupabaseAuth() {
-  const cookieStore = await cookies();
-  
-  const supabaseClient =  createServerClient(
+  return createServerClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_ANON_KEY!,
     {
@@ -34,7 +27,5 @@ export async function getSupabaseAuth() {
         },
       },
     }
-  );
-
-  return supabaseClient.auth;
+  )
 }

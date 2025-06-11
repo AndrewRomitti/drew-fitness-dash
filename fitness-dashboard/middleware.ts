@@ -3,14 +3,16 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
-        request,
+        request: {
+            headers: request.headers,
+        },
     });
 
     const path = new URL(request.url).pathname;
 
     const user = await getUser(request, supabaseResponse);
 
-    if (path == "/protected-route" && !user) {
+    if (path === "/protected-route" && !user) {
         return NextResponse.redirect(new URL("/", request.url));
     }
 
