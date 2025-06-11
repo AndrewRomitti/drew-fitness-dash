@@ -32,8 +32,12 @@ const Weight = () => {
             .insert([{weight: parseFloat(weight), user_id:user.id}])
 
         if (error) {
-            console.error(error)
-            toast.error('Failed to log weight');
+            if (error.message.includes('unique')) {
+                toast.error('Already logged weight today');
+            } else {
+                console.log(error.message);
+                toast.error('Failed to log weight');
+            }
         } else {
             toast.success('Logged weight Successfully');
             setWeight('')
