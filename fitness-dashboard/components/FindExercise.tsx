@@ -15,6 +15,7 @@ type Exercise = {
   weight1: any,
   weight2: any,
   weight3: any,
+  logged_at: any,
 }
 
 
@@ -38,9 +39,10 @@ const FindExercise = () => {
 
     const {data, error} = await suapbase
       .from('exercises')
-      .select('category, exercise, set1, set2, set3, weight1, weight2, weight3')
+      .select('category, exercise, set1, set2, set3, weight1, weight2, weight3, logged_at')
       .eq('exercise', exercise)
       .eq('user_id', user?.id)
+      .order('logged_at', {ascending: false})
       .single()
 
     if (error) {
@@ -70,10 +72,13 @@ const FindExercise = () => {
                 <p>No data to show</p>
               ) : (
                 data.map((item, i) => (
-                  <div key={i} className="flex gap-5 justify-center">
-                      <p>Set 1: {item.set1} ({item.weight1})</p>
-                      <p>Set 2: {item.set2} ({item.weight2})</p>
-                      <p>Set 3: {item.set3} ({item.weight3})</p>
+                  <div key={i}>
+                      <p>Last Logged: {item.logged_at}</p>
+                      <div className="flex gap-5 justify-center">
+                        <p>Set 1: {item.set1} ({item.weight1})</p>
+                        <p>Set 2: {item.set2} ({item.weight2})</p>
+                        <p>Set 3: {item.set3} ({item.weight3})</p>
+                      </div>
                   </div>
                 ))
               )}

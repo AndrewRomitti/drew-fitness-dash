@@ -36,8 +36,12 @@ const LogExercise = () => {
             .insert([{user_id: user.id, category: category, exercise: exercise, set1: set1, set2: set2, set3: set3, weight1: weight1, weight2: weight2, weight3: weight3}]);
 
         if (error) {
-            console.error(error)
-            toast.error('Failed to log weight');
+            if (error.message.includes('unique')) {
+                toast.error('Already logged exercise for today');
+            } else {
+                console.error(error)
+                toast.error('Failed to log weight');
+            }
         } else {
             toast.success('Logged weight Successfully');
             setCategory('')
