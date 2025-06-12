@@ -34,6 +34,7 @@ const FindExercise = () => {
 
     if (!user) {
       toast.error('Must be logged in');
+      setData([]);
       return;
     }
 
