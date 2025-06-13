@@ -1,6 +1,5 @@
 import FindExercise from "@/components/FindExercise";
 import LogExercise from "@/components/LogExercise";
-import Navbar from "@/components/Navbar";
 import Nutrients from "@/components/Nutrients";
 import Weight from "@/components/Weight";
 import { getUser } from "@/lib/auth";
