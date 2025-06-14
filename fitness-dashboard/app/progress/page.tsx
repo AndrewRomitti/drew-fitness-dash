@@ -32,7 +32,6 @@ const page = () => {
     const [weights, setWeights] = useState<Weights[]>([]);
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const supabase = createClient();
-    let lastHeader = '';
 
     useEffect(() => {
         const fetchNutrients = async () => {
@@ -50,6 +49,7 @@ const page = () => {
                 .from('nutrients')
                 .select('protein, calories, logged_at')
                 .eq('user_id', user?.id)
+                .order('logged_at', {ascending: false})
 
             if (error) {
                 setNutrients([]);
@@ -73,6 +73,7 @@ const page = () => {
                 .from('weights')
                 .select('weight, logged_at')
                 .eq('user_id', user?.id)
+                .order('logged_at', {ascending: false})
 
             if (error) {
                 setWeights([]);
@@ -96,6 +97,7 @@ const page = () => {
                 .from('exercises')
                 .select('category, exercise, set1, set2, set3, weight1, weight2, weight3, logged_at')
                 .eq('user_id', user?.id)
+                .order('logged_at', {ascending: false})
 
             if (error) {
                 setExercises([]);
@@ -111,50 +113,54 @@ const page = () => {
 
   return (
     <div className="text-black min-h-screen mt-5 mb-5">
-        <p className="text-2xl text-center">Progress</p>
+        <p className="text-3xl text-center">Progress</p>
 
-        <div className="flex flex-col gap-10 items-center justify-center mt-5">
-            <div className="bg-white rounded w-90 h-20 flex justify-center items-center flex-col">
-                <p>Nutrients</p>
-                <div className="flex flex-col">
+        <div className="flex flex-col gap-10 items-center justify-center mt-5 rounded-lg">
+            <div className="bg-white rounded w-150 h-fit flex justify-center items-center flex-col gap-5">
+                <p className="text-xl">Nutrients</p>
+                <div className="flex flex-col w-100 gap-5">
                     {nutrients.length === 0 ? (
                         <p>No data to show</p>
                     ) : (
                         nutrients.map((item, i) => (
-                        <div key={i} className="mb-2 flex gap-5">
-                            <p>Calories: {item.calories}</p>
-                            <p>Protein: {item.protein}</p>
-                            <p>Date: {item.logged_at}</p>
+                        <div className="flex flex-col w-full h-fit border-solid border-gray-200 border-2 rounded-lg">
+                            <div key={i} className="mb-2 flex gap-5 justify-center">
+                                <p>Calories: {item.calories}</p>
+                                <p>Protein: {item.protein}</p>
+                                <p>Date: {item.logged_at}</p>
+                            </div>
                         </div>
                         ))
                     )}
                 </div>
             </div>
-            <div className="bg-white rounded w-90 h-20 flex justify-center items-center flex-col">
-                <p>Weight Data</p>
-                <div className="flex flex-col">
+            <div className="bg-white w-150 h-fit flex justify-center items-center flex-col gap-5 rounded-lg">
+                <p className="text-xl">Weight Data</p>
+                <div className="flex flex-col w-100 gap-5">
                     {weights.length === 0 ? (
                         <p>No data to show</p>
                     ) : (
                         weights.map((item, i) => (
-                        <div key={i} className="mb-2 flex gap-5">
-                            <p>Weight: {item.weight}</p>
-                            <p>Date: {item.logged_at}</p>
-                        </div>
+                            <div className="flex flex-col w-full h-fit border-solid border-gray-200 border-2 rounded-lg items-center">
+                                <div key={i} className="mb-2 flex gap-5">
+                                    <p>Weight: {item.weight}</p>
+                                    <p>Date: {item.logged_at}</p>
+                                </div>
+                            </div>
                         ))
                     )}
                 </div>
             </div>
-            <div className="bg-white rounded w-90 h-fit flex justify-center items-center flex-col">
-                <p>Exercise Data</p>
-                <div className="flex flex-col">
+            <div className="bg-white w-150 h-fit flex justify-center items-center flex-col gap-5 rounded-lg">
+                <p className="text-xl">Exercise Data</p>
+                <div className="flex flex-col w-100">
                     {exercises.length === 0 ? (
                         <p>No data to show</p>
                     ) : (
                         
                         exercises.map((item, i) => (
                         <div key={i} className="mb-2 flex gap-5">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col items-center w-full h-fit border-solid border-gray-200 border-2 rounded-lg">
                                 <p>Exercise: {item.exercise}</p>
                                 <div className="flex gap-5">
                                     <p>Set 1: {item.set1}</p>
